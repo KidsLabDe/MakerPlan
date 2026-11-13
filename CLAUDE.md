@@ -7,9 +7,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A **live agenda board** for Make Your School (MYS) Hackdays, shown on the classroom whiteboard:
 the running item with a countdown, the day's timeline, what's next, and a ticker of notes. There is
 **no backend**: the plan is the static JSON file `src/data/hackday.json`, and the only runtime
-state is the clock plus in-memory presenter steps. Styled in [KidsLab](https://kidslab.de)
-branding. Deployed to GitHub Pages (https://kidslabde.github.io/MYSD/) by
-`.github/workflows/deploy.yml` on every push to `main`.
+state is the clock plus in-memory presenter steps. Deployed to GitHub Pages
+(https://kidslabde.github.io/MakerPlan/) by `.github/workflows/deploy.yml` on every push to `main`
+(the `github-pages` environment only allows `main`).
+
+**Branches per event brand:** `main` currently carries the **ZeFix!** event (Code & Culture
+Jugend-Hackathon, Amerikahaus München, 13.–15.11.2026) with ZeFix branding (style guide by Piep
+Gestaltung, from the separate `ZeFix.org` repo). Branch `mys` keeps the Make Your School / KidsLab
+state (KidsLab logo, hue 204, Pixelify Sans + Inter from Google Fonts, plan Gymnasium Wertingen).
+Whatever is on `main` is what Pages shows.
 
 ## Commands
 
@@ -26,7 +32,9 @@ npx vitest run -t "should report a gap between two items"  # run tests matching 
 
 Requires **Node 24** (≥ 24.15, `engines` in `package.json`, `.nvmrc`); vitest 5 and jsdom 30 refuse
 older versions. CI reads the same `.nvmrc`. The toolchain is Vite 8 (rolldown bundler), Vitest 5
-with jsdom and `@vitest/coverage-v8`.
+with jsdom and `@vitest/coverage-v8`. Vitest is configured in `vite.config.ts` (`globals: true`,
+`css: false`, setup `src/test/setup.ts` with jest-dom). Pure Pixel-scene logic
+(`scene/tear.ts`, `kollege.ts`, `idle.ts`, `weather.ts`, …) also has `*.test.ts` next to it.
 
 `npm run build` is also the type-check gate — there is no separate lint step; TypeScript runs in
 `strict` mode with `noUnusedLocals`, `noUnusedParameters`, and `noUncheckedIndexedAccess`.
@@ -100,14 +108,15 @@ Data flows one direction: **`hackday.json` + clock → pure functions → React 
 
 ## Theming (the important convention)
 
-The entire color system is driven by **one CSS variable, `--brand-hue`** (currently `204`), in
+The entire color system is driven by **one CSS variable, `--brand-hue`** (currently `194`, ZeFix Petrol; `--brand` is the exact `#297d96`), in
 `src/index.css`. Change that single value to re-tint the whole app. Semantic tokens (`--bg`,
 `--surface`, `--text`, tone colors…) are defined for light theme on `:root` and overridden under
 `:root[data-theme="dark"]`. `useTheme.ts` stamps `data-theme` on `<html>` and persists the choice to
 `localStorage`. Never hard-code colors in components; use the CSS variables and `tone-*` classes.
 
-Fonts (Pixelify Sans display, Inter body) load from Google Fonts in `index.html`; `--font-display`
-is used for headings/logo, `--font-body` for everything else.
+Fonts (Schoolbell display, Carlito ≈ Calibri body) are self-hosted in `src/assets/zefix-fonts/`
+(imported in `main.tsx`, no Google Fonts); `--font-display` is used for headings/logo, `--font-body` for everything else. The Pixel UI instead bundles its
+fonts (VT323, Pixelify Sans, Press Start 2P) via `@fontsource` in `scene/fonts.css` (npm packages, not Google Fonts).
 
 ## Build gotchas (don't "fix" these)
 
@@ -120,6 +129,9 @@ place (and the matching `.gitignore` entries) so builds stay clean.
 stays at `/` and no `@types/node` is needed for `process.env`.
 
 ## Conventions
+
+`src/App.test.tsx` renders a fixed plan copy (`src/test/fixtures/hackday.fixture.json`, mocked in
+for `data/hackday.json`), so changing the live plan never breaks those tests.
 
 Text is **German** (labels, seed content, UI copy). The board is public in the classroom, so no
 internal or team-only notes go into the plan. Follow the user's global rules in `~/.claude/rules/`,
