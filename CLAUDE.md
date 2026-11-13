@@ -81,6 +81,14 @@ Data flows one direction: **`hackday.json` + clock → pure functions → React 
   (`.board__side`) holds the Tagesplan and, below it, the animated ZeFix-Kabelmonster
   (`assets/zefix-mascot-animiert.gif` from zefix.org, opaque white: `multiply` in light theme,
   a rounded card in dark theme; it shrinks to the space a full day leaves).
+- **ZeFix scenes** (Modern UI, board mode only): `lib/ambient.ts` decides purely from the day's
+  clock which playful scene runs (one per 75 s slot, each scene once per shuffled round, never
+  twice in a row; quiet during talks, in the Endspurt and 20 s around an item change).
+  `modern/Ambient.tsx` + `ambient.css` animate the ZeFix Signal stickers (Servus, Hä?, ZEFIX!,
+  Gfixt!, Läuft bei mir!, Hilfe! Mentor:in?, Brotzeit!) and the bug cable from
+  `assets/ambient/` (resized copies from the `ZeFix.org` repo). Scene lengths live in
+  `SCENE_SECONDS` and drive the keyframe duration; a negative delay continues a scene after a
+  reload. `?szene=<name>` loops one scene for checks. Hidden with `prefers-reduced-motion`.
 - **Pixel UI** (`src/components/pixel/`, ported from the lo-fi board on branch `lofi-dashboard`):
   a pixel-art room (CRT monitor with countdown, wall calendar a character ticks off, window with
   blinds and live weather, 3D printer, idle animations, easter egg "Bug-Jagd" via G·A·M·E).

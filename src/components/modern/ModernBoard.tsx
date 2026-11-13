@@ -1,8 +1,11 @@
+import { useState } from "react";
 import type { CSSProperties } from "react";
+import { ambientAt, parseAmbientParam, pinnedShow } from "../../lib/ambient";
 import type { BoardModel } from "../../hooks/useBoardModel";
 import type { Theme } from "../../hooks/useTheme";
 import mascot from "../../assets/zefix-mascot-animiert.gif";
 import { Header } from "../Header";
+import { Ambient } from "./Ambient";
 import { NowPanel } from "../NowPanel";
 import { PixelCursor } from "../PixelCursor";
 import { Ticker } from "../Ticker";
@@ -19,6 +22,10 @@ interface ModernBoardProps {
 /** The Modern UI: ZeFix-styled board with hero, Tagesplan and ticker. */
 export function ModernBoard({ board, scale, theme, onToggleTheme, onToggleUi }: ModernBoardProps) {
   const { data, timeline, plan, click } = board;
+  // `?szene=<name>` pins one scene (looped) for checks; otherwise the day's clock picks.
+  const [pinned] = useState(() => parseAmbientParam(window.location.search));
+  const show =
+    pinned !== null ? pinnedShow(pinned, board.nowSeconds) : ambientAt(timeline, board.nowSeconds);
   return (
     <div className="board" style={{ "--board-scale": scale } as CSSProperties}>
       <Header
@@ -50,6 +57,8 @@ export function ModernBoard({ board, scale, theme, onToggleTheme, onToggleUi }: 
       </main>
 
       <Ticker messages={data.messages ?? []} />
+
+      <Ambient show={show} />
 
       {click !== null && (
         <PixelCursor

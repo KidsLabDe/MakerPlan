@@ -1,0 +1,215 @@
+/* =========================================================================
+   Playful ZeFix scenes over the Modern board (see lib/ambient.ts for when).
+   Only in board mode (the fixed 1920×1080 stage), so positions are stage px.
+   Each scene's keyframes span --ambient-len (from SCENE_SECONDS) and start
+   --ambient-delay into it, so a reload continues a running scene.
+   ========================================================================= */
+
+.ambient {
+  display: none;
+}
+
+@media (min-width: 1280px) and (min-height: 720px) {
+  .ambient {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 25;
+    overflow: hidden;
+    pointer-events: none;
+  }
+}
+
+.ambient__scene {
+  position: absolute;
+  inset: 0;
+}
+
+.ambient__actor {
+  position: absolute;
+  width: 250px;
+  animation-duration: var(--ambient-len);
+  animation-delay: var(--ambient-delay);
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+.ambient__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 18px hsl(var(--brand-hue) 40% 15% / 0.25));
+}
+
+/* --------------------------------------------- walkers: Servus, Brotzeit */
+.ambient__actor--walker {
+  bottom: -26px;
+  left: 0;
+  width: 220px;
+  animation-name: ambientWalkIn;
+}
+
+.ambient__actor--walker .ambient__img {
+  transform-origin: 50% 100%;
+  animation: ambientWaddle 0.42s ease-in-out infinite alternate;
+}
+
+/* Brotzeit comes from the right (the sticker text must not be mirrored). */
+.ambient__scene--brotzeit .ambient__actor--walker {
+  animation-name: ambientWalkInRtl;
+}
+
+@keyframes ambientWalkIn {
+  0% { transform: translateX(-300px); }
+  28% { transform: translateX(560px); }
+  36% { transform: translateX(560px) translateY(-36px) rotate(-6deg); }
+  44% { transform: translateX(560px); }
+  66% { transform: translateX(600px); }
+  100% { transform: translateX(2000px); }
+}
+
+@keyframes ambientWalkInRtl {
+  0% { transform: translateX(1960px); }
+  30% { transform: translateX(1080px); }
+  38% { transform: translateX(1080px) translateY(-30px) rotate(5deg); }
+  46% { transform: translateX(1080px); }
+  66% { transform: translateX(1040px); }
+  100% { transform: translateX(-320px); }
+}
+
+@keyframes ambientWaddle {
+  from { transform: rotate(-5deg) translateY(0); }
+  to { transform: rotate(5deg) translateY(-10px); }
+}
+
+/* ------------------------------------- Bug-Jagd: bug cable, ZEFIX! after */
+.ambient__actor--bug {
+  bottom: 18px;
+  left: 0;
+  width: 420px;
+  animation-name: ambientBugCrawl;
+  animation-timing-function: linear;
+}
+
+/* The bug's head points right in the image; it crawls to the left. */
+.ambient__actor--bug .ambient__img {
+  transform: scaleX(-1);
+  animation: ambientBugWiggle 0.3s ease-in-out infinite alternate;
+}
+
+.ambient__actor--chaser {
+  bottom: 4px;
+  left: 0;
+  width: 240px;
+  animation-name: ambientChase;
+}
+
+.ambient__actor--chaser .ambient__img {
+  transform-origin: 50% 100%;
+  animation: ambientWaddle 0.22s ease-in-out infinite alternate;
+}
+
+@keyframes ambientBugCrawl {
+  0% { transform: translateX(1980px); }
+  78% { transform: translateX(-480px); }
+  100% { transform: translateX(-480px); }
+}
+
+@keyframes ambientBugWiggle {
+  from { transform: scaleX(-1) translateY(0) skewX(-4deg); }
+  to { transform: scaleX(-1) translateY(-8px) skewX(4deg); }
+}
+
+@keyframes ambientChase {
+  0%, 14% { transform: translateX(2000px); }
+  60% { transform: translateX(700px) translateY(-24px); }
+  64% { transform: translateX(640px); }
+  100% { transform: translateX(-300px); }
+}
+
+/* ------------------------------------------- Hä?: peeks up, looks, ducks */
+.ambient__actor--peek {
+  bottom: -10px;
+  left: 820px;
+  animation-name: ambientPeek;
+}
+
+.ambient__actor--peek .ambient__img {
+  transform-origin: 50% 100%;
+  animation: ambientTilt 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPeek {
+  0% { transform: translateY(110%); }
+  22% { transform: translateY(18%); }
+  30% { transform: translateY(26%); }
+  78% { transform: translateY(22%); }
+  100% { transform: translateY(110%); }
+}
+
+@keyframes ambientTilt {
+  from { transform: rotate(-8deg); }
+  to { transform: rotate(8deg); }
+}
+
+/* ------------------------- Läuft bei mir!: leans in from the left edge */
+.ambient__actor--lean {
+  /* Low, so it never covers the countdown ring above. */
+  bottom: -40px;
+  left: 0;
+  width: 220px;
+  transform-origin: 0% 100%;
+  animation-name: ambientLean;
+}
+
+@keyframes ambientLean {
+  0% { transform: translateX(-110%) rotate(25deg); }
+  20% { transform: translateX(-18%) rotate(-6deg); }
+  28% { transform: translateX(-22%) rotate(2deg); }
+  50% { transform: translateX(-20%) rotate(-3deg); }
+  80% { transform: translateX(-22%) rotate(1deg); }
+  100% { transform: translateX(-110%) rotate(25deg); }
+}
+
+/* -------------------------- Hilfe! Mentor:in?: hops up and down, waving */
+.ambient__actor--hop {
+  bottom: -10px;
+  left: 1080px;
+  animation-name: ambientHop;
+}
+
+@keyframes ambientHop {
+  0% { transform: translateY(110%); }
+  15% { transform: translateY(0); }
+  24% { transform: translateY(-60px) rotate(-4deg); }
+  33% { transform: translateY(0); }
+  42% { transform: translateY(-60px) rotate(4deg); }
+  51% { transform: translateY(0); }
+  60% { transform: translateY(-60px) rotate(-4deg); }
+  70% { transform: translateY(0); }
+  86% { transform: translateY(0); }
+  100% { transform: translateY(110%); }
+}
+
+/* ------------------------------------------ Gfixt!: pops, spins, shrinks */
+.ambient__actor--pop {
+  bottom: 20px;
+  left: 860px;
+  width: 240px;
+  animation-name: ambientPop;
+}
+
+@keyframes ambientPop {
+  0% { transform: scale(0) rotate(-30deg); }
+  14% { transform: scale(1.18) rotate(8deg); }
+  22% { transform: scale(0.95) rotate(-4deg); }
+  30% { transform: scale(1) rotate(0deg); }
+  80% { transform: scale(1) rotate(3deg); }
+  100% { transform: scale(0) rotate(40deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient {
+    display: none;
+  }
+}
