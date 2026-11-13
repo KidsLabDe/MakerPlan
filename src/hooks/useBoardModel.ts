@@ -39,14 +39,12 @@ export interface BoardModel {
 
 /**
  * The board's data logic: selected day, timeline, presenter steps (in memory
- * only) and the pixel-mouse click. `presenter` switches the clicker keys off,
- * e.g. while the UI picker is shown.
+ * only) and the pixel-mouse click.
  */
 export function useBoardModel(
   data: HackdayData,
   now: Date,
   debugOffset: number | null,
-  presenter: boolean,
 ): BoardModel {
   // Presenter steps per day, in memory only (a reload returns to the plan).
   const [adjustments, setAdjustments] = useState<Readonly<Record<string, readonly Adjustment[]>>>(
@@ -63,7 +61,7 @@ export function useBoardModel(
   }, [selected?.day.schedule, dayAdjustments, nowSeconds]);
 
   usePresenterKeys((step) => {
-    if (!presenter || selected === null) return;
+    if (selected === null) return;
     const { date, schedule } = selected.day;
     const pressed = new Date(Date.now() + (debugOffset ?? 0));
     const seconds = effectiveSeconds(date, pressed) + pressed.getMilliseconds() / 1000;

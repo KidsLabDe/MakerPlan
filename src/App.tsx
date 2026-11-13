@@ -7,7 +7,6 @@ import { useBoardScale } from "./hooks/useBoardScale";
 import { useClock } from "./hooks/useClock";
 import { useTheme } from "./hooks/useTheme";
 import { useUiChoice } from "./hooks/useUiChoice";
-import { UiPicker } from "./components/UiPicker";
 import { ModernBoard } from "./components/modern/ModernBoard";
 import { PixelBoard } from "./components/pixel/PixelBoard";
 
@@ -29,15 +28,14 @@ export default function App() {
   const [debugOffset] = useState(initialDebugOffset);
   const now = useClock(debugOffset ?? 0);
   const scale = useBoardScale();
-  const { ui, choose, toggle } = useUiChoice(data.days, now);
-  // One model for both UIs; the clicker stays off while the picker is shown.
-  const board = useBoardModel(data, now, debugOffset, ui !== null);
+  const { ui, toggle } = useUiChoice(data.days, now);
+  // One model for both UIs.
+  const board = useBoardModel(data, now, debugOffset);
 
   useEffect(() => {
     document.title = `${data.boardTitle} · ${data.title}`;
   }, []);
 
-  if (ui === null) return <UiPicker title={data.boardTitle} onChoose={choose} />;
   if (ui === "pixel") return <PixelBoard board={board} onToggleUi={toggle} />;
   return (
     <ModernBoard

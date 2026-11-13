@@ -19,7 +19,7 @@ vi.mock("./data/hackday.json", async () => ({
 const DAY1_MORNING = new Date(2026, 8, 28, 10, 45, 0);
 const { days } = rawData as HackdayData;
 
-/** Stores a UI choice as if picked on `at`, so the board skips the picker. */
+/** Stores a UI choice as if switched to on `at`. */
 function storeChoice(ui: UiVariant, at: Date = DAY1_MORNING) {
   window.localStorage.setItem("mys-ui", JSON.stringify(makeChoice(ui, days, at)));
 }
@@ -230,54 +230,33 @@ describe("UI choice", () => {
     window.localStorage.clear();
   });
 
-  it("should ask for a UI on the first visit", () => {
+  it("should show the ZeFix board (Modern) on the first visit, without asking", () => {
     render(<App />);
-    expect(screen.getByText("Wie soll das Board aussehen?")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Modern/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Pixel/ })).toBeInTheDocument();
-    expect(screen.queryByLabelText("Aktuelle Uhrzeit")).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /Aktueller Programmpunkt/i })).toBeInTheDocument();
+    expect(screen.queryByText("Wie soll das Board aussehen?")).not.toBeInTheDocument();
   });
 
-  it("should show the Modern board once Modern is picked, and keep it on reload", () => {
-    const { unmount } = render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: /Modern/ }));
-    expect(screen.getByRole("region", { name: /Aktueller Programmpunkt/i })).toBeInTheDocument();
-
-    unmount();
+  it("should keep Pixel on reload once it was switched to", () => {
+    storeChoice("pixel");
     render(<App />);
-    expect(screen.queryByText("Wie soll das Board aussehen?")).not.toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /Aktueller Programmpunkt/i })).toBeInTheDocument();
-  });
-
-  it("should show the Pixel board once Pixel is picked", () => {
-    render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: /Pixel/ }));
-    expect(screen.queryByText("Wie soll das Board aussehen?")).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: /Aktueller Programmpunkt/i })).not.toBeInTheDocument();
     expect(screen.getByText("Ideenfindung (2/2)")).toBeInTheDocument();
   });
 
-  it("should ask again once the event the choice was made for is over", () => {
+  it("should go back to Modern once the event the Pixel choice was made for is over", () => {
     storeChoice("pixel");
     vi.setSystemTime(new Date(2026, 9, 1, 8, 0, 0));
     render(<App />);
-    expect(screen.getByText("Wie soll das Board aussehen?")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Zur Pixel-Ansicht wechseln" })).toBeInTheDocument();
   });
 
-  it("should ask again when the choice was made for another event", () => {
+  it("should go back to Modern when the Pixel choice was made for another event", () => {
     window.localStorage.setItem(
       "mys-ui",
       JSON.stringify({ ui: "pixel", event: "2026-06-01/2026-06-03", until: "2026-12-31" }),
     );
     render(<App />);
-    expect(screen.getByText("Wie soll das Board aussehen?")).toBeInTheDocument();
-  });
-
-  it("should ignore presenter clicks while the picker is shown", () => {
-    render(<App />);
-    fireEvent.keyDown(window, { key: "PageDown" });
-    fireEvent.click(screen.getByRole("button", { name: /Modern/ }));
-    expect(screen.getByRole("listitem", { current: "step" })).toHaveTextContent("Ideenfindung (2/2)");
+    expect(screen.getByRole("region", { name: /Aktueller Programmpunkt/i })).toBeInTheDocument();
   });
 
   it("should switch between Modern and Pixel from the header, like the theme toggle", () => {
@@ -306,7 +285,7 @@ describe("UI choice", () => {
     }
   });
 
-  it("should use the UI given as ?ui= without asking or storing it", () => {
+  it("should use the UI given as ?ui= without storing it", () => {
     window.history.pushState({}, "", "/?ui=modern");
     try {
       render(<App />);

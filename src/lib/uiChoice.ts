@@ -1,7 +1,8 @@
 /**
- * Which board UI to show (Modern or Pixel). The choice is made on the first
- * visit and holds for one event only: it resets once that event is over or the
- * plan is swapped for another event. Pure and clock-free, like `days.ts`.
+ * Which board UI to show (Modern or Pixel). Modern (the ZeFix board) is the
+ * default; switching with the header button stores a choice that holds for one
+ * event only: it falls back to Modern once that event is over or the plan is
+ * swapped for another event. Pure and clock-free, like `days.ts`.
  */
 
 import type { HackdayDay } from "../types";
@@ -10,6 +11,9 @@ import { dayOffset, toIsoDate } from "./days";
 export type UiVariant = "modern" | "pixel";
 
 export const UI_VARIANTS: readonly UiVariant[] = ["modern", "pixel"] as const;
+
+/** Shown when no (valid) choice is stored. */
+export const DEFAULT_UI: UiVariant = "modern";
 
 /** A stored choice, as kept in `localStorage`. */
 export interface UiChoice {
@@ -44,14 +48,14 @@ export function makeChoice(ui: UiVariant, days: readonly HackdayDay[], now: Date
   return { ui, event, until: last > today ? last : today };
 }
 
-/** The UI to show, or null when the visitor has to pick (again). */
+/** The UI to show: the stored choice while it holds, else `DEFAULT_UI`. */
 export function activeUi(
   choice: UiChoice | null,
   days: readonly HackdayDay[],
   now: Date,
-): UiVariant | null {
-  if (choice === null || choice.event !== eventKey(days)) return null;
-  return dayOffset(choice.until, now) >= 0 ? choice.ui : null;
+): UiVariant {
+  if (choice === null || choice.event !== eventKey(days)) return DEFAULT_UI;
+  return dayOffset(choice.until, now) >= 0 ? choice.ui : DEFAULT_UI;
 }
 
 /** Reads a stored choice; anything malformed counts as no choice. */

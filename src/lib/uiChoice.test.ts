@@ -52,16 +52,16 @@ describe("activeUi", () => {
     expect(activeUi(choice, days, new Date(2026, 8, 30, 23, 59, 59))).toBe("pixel");
   });
 
-  it("should reset the choice once the event is over", () => {
-    expect(activeUi(choice, days, at(10, 1, 0))).toBeNull();
+  it("should fall back to Modern once the event is over", () => {
+    expect(activeUi(choice, days, at(10, 1, 0))).toBe("modern");
   });
 
-  it("should reset the choice when the plan is for another event", () => {
-    expect(activeUi(choice, nextEvent, at(9, 29))).toBeNull();
+  it("should fall back to Modern when the plan is for another event", () => {
+    expect(activeUi(choice, nextEvent, at(9, 29))).toBe("modern");
   });
 
-  it("should ask when nothing was chosen yet", () => {
-    expect(activeUi(null, days, at(9, 20))).toBeNull();
+  it("should show Modern (the ZeFix board) when nothing was chosen yet", () => {
+    expect(activeUi(null, days, at(9, 20))).toBe("modern");
   });
 });
 

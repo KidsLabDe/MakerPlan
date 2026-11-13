@@ -14,14 +14,14 @@ function storedChoice(): UiChoice | null {
 }
 
 /**
- * The board UI picked on the first visit, persisted for the current (or next)
- * event only; `ui` turns null again once that event is over. `?ui=` overrides it
- * until the visitor picks or toggles.
+ * The board UI: Modern by default; a switch is persisted for the current (or
+ * next) event only and falls back to Modern once that event is over. `?ui=`
+ * overrides it until the visitor toggles.
  */
 export function useUiChoice(
   days: readonly HackdayDay[],
   now: Date,
-): { ui: UiVariant | null; choose: (ui: UiVariant) => void; toggle: () => void } {
+): { ui: UiVariant; toggle: () => void } {
   const [forced, setForced] = useState(() => parseUiParam(window.location.search));
   const [choice, setChoice] = useState(storedChoice);
 
@@ -43,5 +43,5 @@ export function useUiChoice(
   const ui = forced ?? activeUi(choice, days, now);
   const toggle = useCallback(() => choose(ui === "pixel" ? "modern" : "pixel"), [choose, ui]);
 
-  return { ui, choose, toggle };
+  return { ui, toggle };
 }

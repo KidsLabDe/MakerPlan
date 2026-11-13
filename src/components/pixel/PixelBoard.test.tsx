@@ -23,7 +23,7 @@ const data: HackdayData = {
 const MID_PHASE = new Date(2026, 8, 28, 11, 0, 0);
 
 function Harness({ now }: { now: Date }) {
-  const board = useBoardModel(data, now, null, true);
+  const board = useBoardModel(data, now, null);
   return <PixelBoard board={board} onToggleUi={() => {}} />;
 }
 
