@@ -1,12 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import App from "./App";
-import rawData from "./data/hackday.json";
+import rawData from "./test/fixtures/hackday.fixture.json";
 import { NowPanel } from "./components/NowPanel";
 import { buildTimeline, parseTime } from "./lib/schedule";
 import type { UiVariant } from "./lib/uiChoice";
 import { makeChoice } from "./lib/uiChoice";
 import type { AgendaItem, HackdayData } from "./types";
+
+// The board renders a fixed copy of a real plan (Gymnasium Wertingen), not the
+// live `hackday.json`, so these tests don't break whenever a new event is set up.
+vi.mock("./data/hackday.json", async () => ({
+  default: (await import("./test/fixtures/hackday.fixture.json")).default,
+}));
 
 // Day 1 (Mon 28 Sep 2026), inside "Ideenfindung (2/2)" (10:15–11:15), so the
 // live clock, current item and next item are all deterministic.
