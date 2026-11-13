@@ -1,17 +1,17 @@
 /**
- * KidsLab brand constants, derived from kidslab.de.
+ * ZeFix brand constants, from the ZeFix Gestaltungskonzept (Piep, 06/2026).
  *
- * Primary color is a vivid blue `hsl(204 100% 50%)`; the display typeface is
- * "Pixelify Sans" and body copy is "Inter". These are mirrored as CSS custom
- * properties in `index.css` — keep the two in sync.
+ * Primary color is Petrol `#297d96` (hue 194); the display typeface is
+ * "Schoolbell" and body copy is "Carlito" (≈ Calibri). These are mirrored as
+ * CSS custom properties in `index.css` — keep the two in sync.
  */
 
 import type { AgendaKind } from "../types";
 
 export const BRAND = {
-  name: "KidsLab",
-  tagline: "Digitale Bildung für junge Menschen",
-  primaryHue: 204,
+  name: "ZeFix!",
+  tagline: "Code & Culture Jugend-Hackathon",
+  primaryHue: 194,
 } as const;
 
 export type HeroTitleSize = "xl" | "lg" | "md";

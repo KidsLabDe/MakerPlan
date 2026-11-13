@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- ZeFix-Favicon: Kabelmonster-Gesicht, vereinfacht (Wackelaugen auf Kabeln + roter Mund) -->
+  <rect width="64" height="64" rx="14" fill="#297d96"/>
+  <!-- Kabelknäuel-Kopf -->
+  <path d="M10 64 C8 44 14 30 32 29 C50 30 56 44 54 64 Z" fill="#17161B"/>
+  <!-- Augen-Kabel -->
+  <path d="M22 33 C20 26 17 22 16 17" stroke="#17161B" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M41 32 C43 24 46 18 48 12" stroke="#17161B" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <!-- Wackelaugen -->
+  <circle cx="16" cy="15" r="9" fill="#fff" stroke="#17161B" stroke-width="2.5"/>
+  <circle cx="18" cy="17" r="4.6" fill="#17161B"/>
+  <circle cx="48" cy="11" r="8" fill="#fff" stroke="#17161B" stroke-width="2.5"/>
+  <circle cx="46.5" cy="13" r="4.2" fill="#17161B"/>
+  <!-- Mund -->
+  <path d="M20 41 Q32 37 44 41 Q42 55 32 55 Q22 55 20 41 Z" fill="#0b0a0d" stroke="#e71d72" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M25 42 Q32 40.5 39 42 L38 45.5 Q32 44.5 26 45.5 Z" fill="#fff"/>
+</svg>

@@ -1,4 +1,5 @@
-import kidslabLogo from "../assets/kidslab-logo.png";
+import zefixLogo from "../assets/zefix-wortmarke.svg";
+import zefixLogoWhite from "../assets/zefix-wortmarke-weiss.svg";
 import type { Theme } from "../hooks/useTheme";
 import { MoonIcon, SunIcon } from "./icons";
 import { UiSwitch } from "./UiSwitch";
@@ -22,7 +23,8 @@ export function Header({ title, now, testTime, theme, onToggleTheme, onToggleUi 
   return (
     <header className="header">
       <div className="logo">
-        <img className="logo__img" src={kidslabLogo} alt="KidsLab" />
+        <img className="logo__img logo__img--light" src={zefixLogo} alt="ZeFix!" />
+        <img className="logo__img logo__img--dark" src={zefixLogoWhite} alt="" aria-hidden="true" />
         <span className="logo__title">{title}</span>
       </div>
 

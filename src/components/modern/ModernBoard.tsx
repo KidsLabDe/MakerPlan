@@ -15,7 +15,7 @@ interface ModernBoardProps {
   onToggleUi: () => void;
 }
 
-/** The Modern UI: KidsLab-styled board with hero, Tagesplan and ticker. */
+/** The Modern UI: ZeFix-styled board with hero, Tagesplan and ticker. */
 export function ModernBoard({ board, scale, theme, onToggleTheme, onToggleUi }: ModernBoardProps) {
   const { data, timeline, plan, click } = board;
   return (

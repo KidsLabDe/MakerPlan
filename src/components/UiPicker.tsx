@@ -8,7 +8,7 @@ interface UiPickerProps {
 }
 
 const OPTIONS: readonly { ui: UiVariant; label: string; hint: string }[] = [
-  { ui: "modern", label: "Modern", hint: "Klar und ruhig, im KidsLab-Look." },
+  { ui: "modern", label: "Modern", hint: "Klar und ruhig, im ZeFix-Look." },
   { ui: "pixel", label: "Pixel", hint: "Retro im Pixel-Art-Stil." },
 ];
 

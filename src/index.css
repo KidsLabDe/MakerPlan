@@ -1,7 +1,7 @@
 /* =========================================================================
-   MYS Hackday — agenda board design system
-   KidsLab branding: one hue (--brand-hue) tints everything, Pixelify Sans
-   display, Inter body, light + dark themes.
+   ZeFix! — agenda board design system
+   ZeFix branding (Piep Gestaltung): Petrol/Türkis via --brand-hue, Hot Pink
+   accent, Schoolbell display, Carlito (≈ Calibri) body, light + dark themes.
 
    Two layouts share one visual language:
    - stacked (default): a single scrolling column for phones / small screens
@@ -11,8 +11,8 @@
    ========================================================================= */
 
 :root {
-  /* Brand hue drives the whole blue scale (matches kidslab.de). */
-  --brand-hue: 204;
+  /* Brand hue drives the whole scale: Petrol #297d96 ≈ hsl(194 57% 37%). */
+  --brand-hue: 194;
   --brand-50: hsl(var(--brand-hue) 100% 96%);
   --brand-100: hsl(var(--brand-hue) 100% 92%);
   --brand-200: hsl(var(--brand-hue) 100% 85%);
@@ -21,8 +21,12 @@
   --brand-500: hsl(var(--brand-hue) 100% 50%);
   --brand-600: hsl(var(--brand-hue) 90% 44%);
   --brand-700: hsl(var(--brand-hue) 85% 36%);
-  /* Solid brand fill for text, arcs and pills (AA on --surface). */
-  --brand: hsl(var(--brand-hue) 85% 38%);
+  /* Solid brand fill for text, arcs and pills (AA on --surface): ZeFix Petrol. */
+  --brand: #297d96;
+  /* ZeFix accent colors from the style guide. */
+  --zefix-turquoise: #68c0b5;
+  --zefix-pink: #e71d72;
+  --zefix-yellow: #ffed99;
 
   /* Categorical palette (kind badges + tiles). Orange doubles as urgency. */
   --tone-blue: hsl(214 72% 42%);
@@ -33,7 +37,7 @@
   --tone-orange-bg: hsl(28 95% 94%);
   --tone-green: hsl(152 60% 28%);
   --tone-green-bg: hsl(150 50% 93%);
-  --tone-pink: hsl(330 70% 42%);
+  --tone-pink: #c0155f;
   --tone-pink-bg: hsl(330 80% 96%);
 
   /* Semantic surfaces — light theme defaults. */
@@ -64,8 +68,8 @@
   --radius-lg: 20px;
   --radius-xl: 28px;
 
-  --font-display: "Pixelify Sans", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Schoolbell", "Carlito", cursive;
+  --font-body: "Carlito", "Calibri", system-ui, -apple-system, sans-serif;
 
   --maxw: 1180px;
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -76,7 +80,7 @@
   --brand-600: hsl(var(--brand-hue) 95% 55%);
   --brand-50: hsl(var(--brand-hue) 60% 16%);
   --brand-100: hsl(var(--brand-hue) 55% 20%);
-  --brand: hsl(var(--brand-hue) 90% 62%);
+  --brand: var(--zefix-turquoise);
 
   --tone-blue: hsl(214 90% 72%);
   --tone-blue-bg: hsl(214 45% 19%);
@@ -228,12 +232,21 @@ button {
   min-width: 0;
 }
 
-/* KidsLab wordmark (2206×503), shown as-is in both themes. */
+/* ZeFix wordmark (233×77): black in light theme, white in dark theme. */
 .logo__img {
   display: block;
   flex: none;
   height: var(--logo-h);
   width: auto;
+}
+
+.logo__img--dark,
+:root[data-theme="dark"] .logo__img--light {
+  display: none;
+}
+
+:root[data-theme="dark"] .logo__img--dark {
+  display: block;
 }
 
 .logo__title {
