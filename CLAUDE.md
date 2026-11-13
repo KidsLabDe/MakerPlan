@@ -60,14 +60,15 @@ Data flows one direction: **`hackday.json` + clock → pure functions → React 
   - `presenter.ts`: clicker steps (`→`/`PageDown` next, `←`/`PageUp` back) as `Adjustment`s that
     move only the switch between two items, in memory only. They never touch `hackday.json`.
   - `cursor.ts`: the pixel-art mouse that "clicks" the next item as it starts (timing, bitmap, path).
-  - `uiChoice.ts`: which board UI (`modern` | `pixel`) to show. The choice is stored for one
-    event only (`eventKey` = first/last day) and resets after its last day or when the plan is
-    for another event. `?ui=modern|pixel` forces a UI without storing it. `UiSwitch` (an icon
+  - `uiChoice.ts`: which board UI (`modern` | `pixel`) to show. `DEFAULT_UI` is `modern` (the
+    ZeFix board); there is no picker screen. A switch is stored for one event only (`eventKey` =
+    first/last day) and falls back to Modern after its last day or when the plan is for another
+    event. `?ui=modern|pixel` forces a UI without storing it. `UiSwitch` (an icon
     button next to the theme toggle, in both UIs) flips between them and stores the new choice.
   - `ticker.ts`, `debugTime.ts` (`?date=&time=` test clock), `board.ts` (1920×1080 stage scale),
     `clock.ts`, `brand.ts` (brand constants, German `KIND_LABELS`, `KIND_TONE`).
-- **`src/App.tsx`** owns the clock, debug offset and theme, and renders one of three screens: the
-  `UiPicker` (first visit / choice expired), `ModernBoard` or `PixelBoard`.
+- **`src/App.tsx`** owns the clock, debug offset and theme, and renders `ModernBoard` or
+  `PixelBoard`.
 - **Two UIs, one data logic:** `useBoardModel` (presenter adjustments per day, timeline, day
   selection, pixel-mouse click) returns a `BoardModel` that both UIs render. It is recomputed
   every second from the plan, the adjustments and now. UIs never compute schedule state themselves.
@@ -76,7 +77,10 @@ Data flows one direction: **`hackday.json` + clock → pure functions → React 
   `mys-ui`), `usePresenterKeys`, `useUpcomingClick`.
 - **`src/components/`** are presentational and controlled by props. `modern/ModernBoard.tsx`
   composes the Modern UI from the shared components (`Header`, `NowPanel`, `Timeline`, `Ticker`,
-  `PixelCursor`, `Confetti`, …; `icons.tsx` is a small inline-SVG set). `UiPicker` has `picker.css`.
+  `PixelCursor`, `Confetti`, …; `icons.tsx` is a small inline-SVG set). Its right column
+  (`.board__side`) holds the Tagesplan and, below it, the animated ZeFix-Kabelmonster
+  (`assets/zefix-mascot-animiert.gif` from zefix.org, opaque white: `multiply` in light theme,
+  a rounded card in dark theme; it shrinks to the space a full day leaves).
 - **Pixel UI** (`src/components/pixel/`, ported from the lo-fi board on branch `lofi-dashboard`):
   a pixel-art room (CRT monitor with countdown, wall calendar a character ticks off, window with
   blinds and live weather, 3D printer, idle animations, easter egg "Bug-Jagd" via G·A·M·E).

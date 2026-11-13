@@ -211,6 +211,36 @@ button {
   margin-top: 20px;
 }
 
+/* Right column: Tagesplan, with the ZeFix-Kabelmonster below it. */
+.board__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  min-height: 0;
+  /* Painted backdrop for the mascot's multiply blend: the scaled stage is an
+     isolated group, so without it the white would blend with nothing. */
+  background: var(--bg);
+}
+
+/* Animated mascot (500×532 GIF on opaque white), bottom right under the
+   Tagesplan. Light theme: multiply drops the white into the background. Dark
+   theme: a light sticker card, or the black cable monster would vanish. */
+.mascot {
+  display: block;
+  align-self: flex-end;
+  width: auto;
+  max-width: 100%;
+  height: 200px;
+  aspect-ratio: 500 / 532;
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme="dark"] .mascot {
+  mix-blend-mode: normal;
+  border-radius: var(--radius-lg);
+}
+
 /* ------------------------------------------------------------------ header */
 .header {
   position: sticky;
@@ -1121,8 +1151,17 @@ button {
   }
 
   .plan {
+    flex: 0 1 auto;
     gap: 14px;
     overflow: hidden;
+  }
+
+  /* The mascot takes what the Tagesplan leaves free and shrinks on full days. */
+  .mascot {
+    flex: 1 1 0;
+    min-height: 0;
+    height: auto;
+    max-height: 360px;
   }
 
   .ticker {

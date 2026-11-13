@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { BoardModel } from "../../hooks/useBoardModel";
 import type { Theme } from "../../hooks/useTheme";
+import mascot from "../../assets/zefix-mascot-animiert.gif";
 import { Header } from "../Header";
 import { NowPanel } from "../NowPanel";
 import { PixelCursor } from "../PixelCursor";
@@ -36,12 +37,16 @@ export function ModernBoard({ board, scale, theme, onToggleTheme, onToggleUi }: 
           resumeLead={board.resumeLead}
           dayName={board.dayName}
         />
-        <Timeline
-          entries={plan.timeline.entries}
-          remainingSeconds={plan.timeline.remainingSeconds}
-          dayLabel={plan.label}
-          preview={plan.preview}
-        />
+        <div className="board__side">
+          <Timeline
+            entries={plan.timeline.entries}
+            remainingSeconds={plan.timeline.remainingSeconds}
+            dayLabel={plan.label}
+            preview={plan.preview}
+          />
+          {/* ZeFix-Kabelmonster from zefix.org (wobbly eyes, talking mouth); purely decorative. */}
+          <img className="mascot" src={mascot} alt="" aria-hidden="true" />
+        </div>
       </main>
 
       <Ticker messages={data.messages ?? []} />
